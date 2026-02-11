@@ -20,6 +20,7 @@ const defaultProgress: UserProgress = {
   anonymousId: null,
   grade: null,
   theme: 'dark',
+  audioEnabled: false,
 };
 
 export function getProgress(): UserProgress {

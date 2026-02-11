@@ -14,6 +14,7 @@ interface ProgressContextType {
   recordPassageComplete: (passageId: string, wpm: number, accuracy: number) => string[];
   earnBadge: (badgeId: string) => boolean;
   updateGrade: (grade: number) => void;
+  toggleAudio: () => void;
   getLevelStats: (level: Level) => {
     completed: number;
     total: number;
@@ -34,6 +35,7 @@ const defaultProgress: UserProgress = {
   anonymousId: null,
   grade: null,
   theme: 'dark',
+  audioEnabled: false,
 };
 
 const defaultContext: ProgressContextType = {
@@ -43,6 +45,7 @@ const defaultContext: ProgressContextType = {
   recordPassageComplete: () => [],
   earnBadge: () => false,
   updateGrade: () => {},
+  toggleAudio: () => {},
   getLevelStats: () => ({ completed: 0, total: 0, avgWpm: 0, avgAccuracy: 0 }),
   canAccessLevel: () => false,
   refreshProgress: () => {},
@@ -55,7 +58,12 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setProgress(getProgress());
+    const stored = getProgress();
+    // Ensure audioEnabled exists for older stored data
+    if (stored.audioEnabled === undefined) {
+      stored.audioEnabled = false;
+    }
+    setProgress(stored);
     setIsLoading(false);
   }, []);
 
@@ -154,6 +162,13 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     []
   );
 
+  const toggleAudio = useCallback(() => {
+    const current = getProgress();
+    const updated = { ...current, audioEnabled: !current.audioEnabled };
+    saveProgress(updated);
+    setProgress(updated);
+  }, []);
+
   const getLevelStats = useCallback(
     (level: Level) => {
       return getLevelProgress(progress, level);
@@ -180,6 +195,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
         recordPassageComplete,
         earnBadge,
         updateGrade,
+        toggleAudio,
         getLevelStats,
         canAccessLevel,
         refreshProgress,

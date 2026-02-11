@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, use } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Volume2, VolumeX } from 'lucide-react';
+import { ArrowLeft, Volume2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -12,7 +12,7 @@ import Timer from '@/components/typing/Timer';
 import StatsDisplay from '@/components/typing/StatsDisplay';
 import SessionResult from '@/components/typing/SessionResult';
 import { useProgress } from '@/components/layout/ProgressProvider';
-import { getPassagesByLevel, getPassageById } from '@/content/passages';
+import { getPassagesByLevel } from '@/content/passages';
 import { LEVELS, BADGES } from '@/lib/constants';
 import { speak, stopSpeaking, isSpeechSupported } from '@/lib/speech';
 import { Level, Passage, TypingState } from '@/types';
@@ -31,11 +31,13 @@ export default function PracticePage({ params }: PracticePageProps) {
   const levelNum = parseInt(resolvedParams.level.replace('l', ''), 10) as Level;
   const levelConfig = LEVELS[levelNum];
 
+  // Use global audio setting from progress
+  const audioEnabled = progress.audioEnabled;
+
   const [sessionState, setSessionState] = useState<SessionState>('ready');
   const [currentPassage, setCurrentPassage] = useState<Passage | null>(null);
   const [passageIndex, setPassageIndex] = useState(0);
   const [timerRunning, setTimerRunning] = useState(false);
-  const [audioEnabled, setAudioEnabled] = useState(false);
   const [liveWpm, setLiveWpm] = useState(0);
   const [liveAccuracy, setLiveAccuracy] = useState(100);
   const [sessionResult, setSessionResult] = useState<{
@@ -193,14 +195,6 @@ export default function PracticePage({ params }: PracticePageProps) {
     setTimerRunning(false);
   }, []);
 
-  // Toggle audio
-  const toggleAudio = useCallback(() => {
-    if (audioEnabled) {
-      stopSpeaking();
-    }
-    setAudioEnabled((prev) => !prev);
-  }, [audioEnabled]);
-
   // Speak current passage when audio enabled during typing
   useEffect(() => {
     if (sessionState === 'typing' && audioEnabled && currentPassage) {
@@ -273,21 +267,15 @@ export default function PracticePage({ params }: PracticePageProps) {
                 <p className="text-lg leading-relaxed">{currentPassage.content}</p>
               </div>
 
+              {/* Audio status indicator */}
               {isSpeechSupported() && (
-                <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
-                  <div className="flex items-center gap-2">
-                    {audioEnabled ? (
-                      <Volume2 className="h-5 w-5 text-green-500" />
-                    ) : (
-                      <VolumeX className="h-5 w-5 text-muted-foreground" />
-                    )}
-                    <span className="text-sm">
-                      {audioEnabled ? 'Audio will play while you type' : 'Listen & Type mode'}
-                    </span>
-                  </div>
-                  <Button variant="outline" size="sm" onClick={toggleAudio}>
-                    {audioEnabled ? 'Disable Audio' : 'Enable Audio'}
-                  </Button>
+                <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
+                  <Volume2 className={`h-5 w-5 ${audioEnabled ? 'text-green-500' : 'text-muted-foreground'}`} />
+                  <span className="text-sm text-muted-foreground">
+                    {audioEnabled
+                      ? 'Audio is ON - text will be read aloud while you type'
+                      : 'Audio is OFF - toggle in header to enable'}
+                  </span>
                 </div>
               )}
 
@@ -305,9 +293,7 @@ export default function PracticePage({ params }: PracticePageProps) {
                 <CardTitle className="text-lg flex items-center justify-between">
                   <span>{currentPassage.title}</span>
                   {audioEnabled && (
-                    <Button variant="ghost" size="icon" onClick={toggleAudio}>
-                      <Volume2 className="h-5 w-5 text-green-500" />
-                    </Button>
+                    <Volume2 className="h-5 w-5 text-green-500" />
                   )}
                 </CardTitle>
               </CardHeader>
@@ -316,6 +302,7 @@ export default function PracticePage({ params }: PracticePageProps) {
                   passage={currentPassage.content}
                   onComplete={handleComplete}
                   onProgress={handleTypingProgress}
+                  audioEnabled={audioEnabled}
                 />
               </CardContent>
             </Card>
@@ -323,9 +310,6 @@ export default function PracticePage({ params }: PracticePageProps) {
             <StatsDisplay
               wpm={liveWpm}
               accuracy={liveAccuracy}
-              showAudio={isSpeechSupported()}
-              audioEnabled={audioEnabled}
-              onToggleAudio={toggleAudio}
             />
           </div>
         )}

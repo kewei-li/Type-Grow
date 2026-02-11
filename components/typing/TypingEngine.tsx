@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { TypingState } from '@/types';
 import { calculateWpm, calculateAccuracy } from '@/lib/progress';
+import { playCorrectSound, playErrorSound } from '@/lib/speech';
 
 interface TypingEngineProps {
   passage: string;
@@ -16,6 +17,7 @@ interface TypingEngineProps {
   }) => void;
   onProgress?: (state: TypingState) => void;
   disabled?: boolean;
+  audioEnabled?: boolean;
 }
 
 export default function TypingEngine({
@@ -23,6 +25,7 @@ export default function TypingEngine({
   onComplete,
   onProgress,
   disabled = false,
+  audioEnabled = false,
 }: TypingEngineProps) {
   const [state, setState] = useState<TypingState>({
     passage,
@@ -112,6 +115,15 @@ export default function TypingEngine({
       const expectedChar = passage[state.currentIndex];
       const typedChar = e.key;
       const isCorrect = typedChar === expectedChar;
+
+      // Play keystroke sound
+      if (audioEnabled) {
+        if (isCorrect) {
+          playCorrectSound();
+        } else {
+          playErrorSound();
+        }
+      }
 
       // Start timer on first keystroke
       const startTime = state.startTime || now;

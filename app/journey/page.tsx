@@ -55,7 +55,7 @@ export default function JourneyPage() {
     return (
       <Card
         key={level}
-        className={`relative overflow-hidden transition-all ${
+        className={`relative overflow-hidden transition-all flex flex-col h-full ${
           status === 'locked'
             ? 'opacity-60'
             : status === 'complete'
@@ -95,58 +95,63 @@ export default function JourneyPage() {
           </CardTitle>
         </CardHeader>
 
-        <CardContent className="space-y-4">
-          {/* Progress */}
-          <div>
-            <div className="flex justify-between text-sm mb-2">
-              <span className="text-muted-foreground">Progress</span>
-              <span>
-                {stats.completed} / {config.totalPassages} passages
-              </span>
+        <CardContent className="flex flex-col flex-1">
+          {/* Content area - grows to fill space */}
+          <div className="space-y-4 flex-1">
+            {/* Progress */}
+            <div>
+              <div className="flex justify-between text-sm mb-2">
+                <span className="text-muted-foreground">Progress</span>
+                <span>
+                  {stats.completed} / {config.totalPassages} passages
+                </span>
+              </div>
+              <Progress value={progressPercent} className="h-2" />
             </div>
-            <Progress value={progressPercent} className="h-2" />
+
+            {/* Stats */}
+            {stats.completed > 0 && (
+              <div className="grid grid-cols-2 gap-4 pt-2">
+                <div className="flex items-center gap-2">
+                  <Gauge className="h-4 w-4 text-muted-foreground" />
+                  <div>
+                    <div className="text-sm text-muted-foreground">Avg WPM</div>
+                    <div className="font-semibold">{stats.avgWpm}</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Target className="h-4 w-4 text-muted-foreground" />
+                  <div>
+                    <div className="text-sm text-muted-foreground">Avg Accuracy</div>
+                    <div className="font-semibold">{stats.avgAccuracy}%</div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Unlock Requirements */}
+            {status === 'locked' && level > 1 && (
+              <div className="text-sm text-muted-foreground bg-muted/50 p-3 rounded-lg">
+                <p className="font-medium mb-1">To unlock:</p>
+                <ul className="list-disc list-inside space-y-1">
+                  <li>Complete {LEVELS[level - 1].passagesRequired} passages in L{level - 1}</li>
+                  <li>Achieve {LEVELS[level - 1].accuracyRequired}% average accuracy</li>
+                </ul>
+              </div>
+            )}
           </div>
 
-          {/* Stats */}
-          {stats.completed > 0 && (
-            <div className="grid grid-cols-2 gap-4 pt-2">
-              <div className="flex items-center gap-2">
-                <Gauge className="h-4 w-4 text-muted-foreground" />
-                <div>
-                  <div className="text-sm text-muted-foreground">Avg WPM</div>
-                  <div className="font-semibold">{stats.avgWpm}</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <Target className="h-4 w-4 text-muted-foreground" />
-                <div>
-                  <div className="text-sm text-muted-foreground">Avg Accuracy</div>
-                  <div className="font-semibold">{stats.avgAccuracy}%</div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Unlock Requirements */}
-          {status === 'locked' && level > 1 && (
-            <div className="text-sm text-muted-foreground bg-muted/50 p-3 rounded-lg">
-              <p className="font-medium mb-1">To unlock:</p>
-              <ul className="list-disc list-inside space-y-1">
-                <li>Complete {LEVELS[level - 1].passagesRequired} passages in L{level - 1}</li>
-                <li>Achieve {LEVELS[level - 1].accuracyRequired}% average accuracy</li>
-              </ul>
-            </div>
-          )}
-
-          {/* Action Button */}
-          <Button
-            className="w-full"
-            disabled={status === 'locked'}
-            onClick={() => router.push(`/practice/l${level}`)}
-          >
-            {status === 'complete' ? 'Review' : status === 'unlocked' ? 'Continue' : 'Locked'}
-            {status !== 'locked' && <ArrowRight className="h-4 w-4 ml-2" />}
-          </Button>
+          {/* Action Button - always at bottom */}
+          <div className="pt-4 mt-auto">
+            <Button
+              className="w-full"
+              disabled={status === 'locked'}
+              onClick={() => router.push(`/practice/l${level}`)}
+            >
+              {status === 'complete' ? 'Review' : status === 'unlocked' ? 'Continue' : 'Locked'}
+              {status !== 'locked' && <ArrowRight className="h-4 w-4 ml-2" />}
+            </Button>
+          </div>
         </CardContent>
       </Card>
     );
@@ -190,7 +195,7 @@ export default function JourneyPage() {
         </div>
 
         {/* Level Cards */}
-        <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto items-stretch">
           {levels.map(renderLevelCard)}
         </div>
 
