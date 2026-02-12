@@ -149,6 +149,11 @@
   .typing-area {
     @apply font-mono text-xl leading-relaxed tracking-wide p-6 rounded-lg;
     @apply bg-card border border-border;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    max-height: 45vh;
+    overflow-y: auto;
   }
 
   /* Progress bar custom styling */

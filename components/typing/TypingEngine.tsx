@@ -72,6 +72,14 @@ export default function TypingEngine({
     onProgress?.(state);
   }, [state, onProgress]);
 
+  // Auto-scroll to keep current character visible
+  useEffect(() => {
+    const currentEl = containerRef.current?.querySelector('.char-current');
+    if (currentEl) {
+      currentEl.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
+  }, [state.currentIndex]);
+
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>) => {
       if (disabled || state.isComplete) return;
@@ -192,8 +200,7 @@ export default function TypingEngine({
         className = 'char-current';
       }
 
-      // Handle spaces and special characters visually
-      const displayChar = char === ' ' ? '\u00A0' : char;
+      const displayChar = char;
 
       return (
         <span key={index} className={className}>

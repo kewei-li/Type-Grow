@@ -26,7 +26,7 @@ type SessionState = 'ready' | 'typing' | 'complete' | 'timeup';
 export default function PracticePage({ params }: PracticePageProps) {
   const resolvedParams = use(params);
   const router = useRouter();
-  const { progress, canAccessLevel, recordPassageComplete, earnBadge, getLevelStats } = useProgress();
+  const { progress, isLoading, canAccessLevel, recordPassageComplete, earnBadge, getLevelStats } = useProgress();
 
   const levelNum = parseInt(resolvedParams.level.replace('l', ''), 10) as Level;
   const levelConfig = LEVELS[levelNum];
@@ -51,6 +51,7 @@ export default function PracticePage({ params }: PracticePageProps) {
 
   // Check level access
   useEffect(() => {
+    if (isLoading) return;
     if (!progress.tutorialComplete) {
       router.push('/tutorial');
       return;
@@ -58,7 +59,7 @@ export default function PracticePage({ params }: PracticePageProps) {
     if (!canAccessLevel(levelNum)) {
       router.push('/journey');
     }
-  }, [progress.tutorialComplete, canAccessLevel, levelNum, router]);
+  }, [isLoading, progress.tutorialComplete, canAccessLevel, levelNum, router]);
 
   // Load passages for this level
   const passages = getPassagesByLevel(levelNum);
@@ -263,8 +264,8 @@ export default function PracticePage({ params }: PracticePageProps) {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="p-4 bg-muted/30 rounded-lg">
-                <p className="text-lg leading-relaxed">{currentPassage.content}</p>
+              <div className="p-4 bg-muted/30 rounded-lg max-h-64 overflow-y-auto">
+                <p className="text-lg leading-relaxed break-words">{currentPassage.content}</p>
               </div>
 
               {/* Audio status indicator */}
@@ -287,9 +288,9 @@ export default function PracticePage({ params }: PracticePageProps) {
         )}
 
         {sessionState === 'typing' && (
-          <div className="max-w-3xl mx-auto space-y-4">
-            <Card>
-              <CardHeader className="pb-2">
+          <div className="max-w-3xl mx-auto flex flex-col" style={{ maxHeight: 'calc(100vh - 220px)' }}>
+            <Card className="flex flex-col min-h-0 flex-1">
+              <CardHeader className="pb-2 shrink-0">
                 <CardTitle className="text-lg flex items-center justify-between">
                   <span>{currentPassage.title}</span>
                   {audioEnabled && (
@@ -297,7 +298,7 @@ export default function PracticePage({ params }: PracticePageProps) {
                   )}
                 </CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="min-h-0 flex-1">
                 <TypingEngine
                   passage={currentPassage.content}
                   onComplete={handleComplete}
@@ -307,10 +308,12 @@ export default function PracticePage({ params }: PracticePageProps) {
               </CardContent>
             </Card>
 
-            <StatsDisplay
-              wpm={liveWpm}
-              accuracy={liveAccuracy}
-            />
+            <div className="shrink-0 mt-4">
+              <StatsDisplay
+                wpm={liveWpm}
+                accuracy={liveAccuracy}
+              />
+            </div>
           </div>
         )}
 
