@@ -11,6 +11,7 @@ import TypingEngine from '@/components/typing/TypingEngine';
 import Timer from '@/components/typing/Timer';
 import StatsDisplay from '@/components/typing/StatsDisplay';
 import SessionResult from '@/components/typing/SessionResult';
+import VirtualKeyboard from '@/components/typing/VirtualKeyboard';
 import { useProgress } from '@/components/layout/ProgressProvider';
 import { getPassagesByLevel } from '@/content/passages';
 import { LEVELS, BADGES } from '@/lib/constants';
@@ -36,6 +37,7 @@ export default function PracticePage({ params }: PracticePageProps) {
   const [timerRunning, setTimerRunning] = useState(false);
   const [liveWpm, setLiveWpm] = useState(0);
   const [liveAccuracy, setLiveAccuracy] = useState(100);
+  const [nextChar, setNextChar] = useState<string | null>(null);
   const [sessionResult, setSessionResult] = useState<{
     wpm: number;
     accuracy: number;
@@ -75,6 +77,13 @@ export default function PracticePage({ params }: PracticePageProps) {
 
   // Handle typing progress updates
   const handleTypingProgress = useCallback((state: TypingState) => {
+    // Update next character for virtual keyboard
+    if (state.currentIndex < state.passage.length) {
+      setNextChar(state.passage[state.currentIndex]);
+    } else {
+      setNextChar(null);
+    }
+
     if (!state.startTime || state.currentIndex === 0) return;
 
     const elapsed = Date.now() - state.startTime;
@@ -154,7 +163,11 @@ export default function PracticePage({ params }: PracticePageProps) {
     setLiveWpm(0);
     setLiveAccuracy(100);
     setSessionResult(null);
-  }, []);
+    // Set initial next char for virtual keyboard
+    if (currentPassage) {
+      setNextChar(currentPassage.content[0] || null);
+    }
+  }, [currentPassage]);
 
   // Continue to next passage
   const handleContinue = useCallback(() => {
@@ -270,6 +283,10 @@ export default function PracticePage({ params }: PracticePageProps) {
                 wpm={liveWpm}
                 accuracy={liveAccuracy}
               />
+            </div>
+
+            <div className="shrink-0 mt-3">
+              <VirtualKeyboard nextChar={nextChar} />
             </div>
           </div>
         )}

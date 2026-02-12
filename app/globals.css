@@ -152,7 +152,7 @@
     white-space: pre-wrap;
     overflow-wrap: break-word;
     word-break: break-word;
-    max-height: 45vh;
+    max-height: 28vh;
     overflow-y: auto;
   }
 
@@ -164,6 +164,19 @@
   /* Badge card hover effect */
   .badge-card {
     @apply transition-all duration-200 hover:scale-105;
+  }
+
+  /* Virtual keyboard */
+  .keyboard-key {
+    @apply flex items-center justify-center rounded text-[10px] font-medium;
+    @apply bg-muted/60 border border-border text-muted-foreground;
+    @apply transition-all duration-150;
+  }
+  .keyboard-key-active {
+    @apply bg-primary/30 border-primary text-primary animate-pulse;
+  }
+  .keyboard-key-shift {
+    @apply bg-yellow-500/20 border-yellow-500/60 text-yellow-500;
   }
 
   /* Timer display */
