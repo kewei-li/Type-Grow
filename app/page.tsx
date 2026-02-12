@@ -38,7 +38,7 @@ export default function LandingPage() {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex-1 flex flex-col">
       <Header showNav={progress.tutorialComplete} />
 
       <main className="flex-1">
@@ -114,12 +114,6 @@ export default function LandingPage() {
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-border py-6">
-        <div className="quiet-container text-center text-sm text-muted-foreground">
-          <p>Type & Grow - Built for focused learning</p>
-        </div>
-      </footer>
     </div>
   );
 }

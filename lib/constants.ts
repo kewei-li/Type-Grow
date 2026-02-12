@@ -107,3 +107,4 @@ export const ANIMALS = [
 ];
 
 export const STORAGE_KEY = 'type-and-grow-progress';
+export const PAGE_VIEWS_KEY = 'type-and-grow-page-views';

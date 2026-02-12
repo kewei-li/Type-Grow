@@ -323,7 +323,7 @@ export default function TutorialPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex-1 flex flex-col">
       <Header showNav={false} />
 
       <main className="flex-1 quiet-container py-8">

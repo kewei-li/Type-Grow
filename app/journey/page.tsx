@@ -25,7 +25,7 @@ export default function JourneyPage() {
 
   if (isLoading || !progress.tutorialComplete) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="flex-1 flex items-center justify-center">
         <div className="text-muted-foreground">Loading...</div>
       </div>
     );
@@ -158,7 +158,7 @@ export default function JourneyPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex-1 flex flex-col">
       <Header showNav={true} />
 
       <main className="flex-1 quiet-container py-8">
