@@ -46,7 +46,7 @@ export default function PracticePage({ params }: PracticePageProps) {
     duration: number;
     errors: number;
     isPersonalBest: boolean;
-    newBadges: Array<{ id: string; name: string; icon: string }>;
+    newBadges: Array<{ id: string; name: string; icon: string; image: string }>;
   } | null>(null);
 
   // Check level access
@@ -149,7 +149,7 @@ export default function PracticePage({ params }: PracticePageProps) {
       isPersonalBest,
       newBadges: newBadges.map((id) => {
         const badge = BADGES.find((b) => b.id === id);
-        return badge ? { id, name: badge.name, icon: badge.icon } : { id, name: id, icon: '🏆' };
+        return badge ? { id, name: badge.name, icon: badge.icon, image: badge.image } : { id, name: id, icon: '🏆', image: '' };
       }),
     });
     setSessionState('complete');

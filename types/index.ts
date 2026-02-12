@@ -11,7 +11,7 @@ export interface TypingState {
 }
 
 // Level definitions
-export type Level = 1 | 2 | 3;
+export type Level = 1 | 2 | 3 | 4 | 5;
 
 export interface LevelConfig {
   id: Level;
@@ -64,6 +64,7 @@ export interface Badge {
   name: string;
   description: string;
   icon: string;
+  image: string;
   earnedAt?: string;
 }
 

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { Download, Share2, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -109,7 +110,14 @@ export default function GalleryPage() {
                       onClick={() => setSelectedBadge(badge)}
                     >
                       <CardContent className="pt-6 text-center">
-                        <div className="text-4xl mb-2">{badge.icon}</div>
+                        <div className="w-16 h-16 mx-auto mb-2 relative">
+                          <Image
+                            src={badge.image}
+                            alt={badge.name}
+                            fill
+                            className="object-contain"
+                          />
+                        </div>
                         <div className="font-medium">{badge.name}</div>
                         <div className="text-xs text-muted-foreground mt-1">
                           {badge.description}
@@ -120,7 +128,14 @@ export default function GalleryPage() {
                   <DialogContent>
                     <DialogHeader>
                       <DialogTitle className="flex items-center gap-2">
-                        <span className="text-3xl">{badge.icon}</span>
+                        <div className="w-10 h-10 relative">
+                          <Image
+                            src={badge.image}
+                            alt={badge.name}
+                            fill
+                            className="object-contain"
+                          />
+                        </div>
                         {badge.name}
                       </DialogTitle>
                     </DialogHeader>
@@ -157,7 +172,14 @@ export default function GalleryPage() {
                 <Card key={badge.id} className="opacity-50">
                   <CardContent className="pt-6 text-center relative">
                     <Lock className="h-4 w-4 absolute top-2 right-2 text-muted-foreground" />
-                    <div className="text-4xl mb-2 grayscale">{badge.icon}</div>
+                    <div className="w-16 h-16 mx-auto mb-2 relative grayscale">
+                      <Image
+                        src={badge.image}
+                        alt={badge.name}
+                        fill
+                        className="object-contain"
+                      />
+                    </div>
                     <div className="font-medium">{badge.name}</div>
                     <div className="text-xs text-muted-foreground mt-1">
                       {badge.description}

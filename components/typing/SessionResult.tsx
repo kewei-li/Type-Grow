@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -11,7 +12,7 @@ interface SessionResultProps {
   duration: number;
   errors: number;
   isPersonalBest?: boolean;
-  newBadges?: Array<{ id: string; name: string; icon: string }>;
+  newBadges?: Array<{ id: string; name: string; icon: string; image: string }>;
   onContinue: () => void;
   onRetry: () => void;
 }
@@ -90,8 +91,15 @@ export default function SessionResult({
             <div className="text-sm font-medium text-center">Badges Earned!</div>
             <div className="flex justify-center gap-2 flex-wrap">
               {newBadges.map((badge) => (
-                <Badge key={badge.id} variant="outline" className="text-lg py-1 px-3">
-                  <span className="mr-1">{badge.icon}</span>
+                <Badge key={badge.id} variant="outline" className="text-lg py-1 px-3 flex items-center gap-2">
+                  <div className="w-6 h-6 relative">
+                    <Image
+                      src={badge.image}
+                      alt={badge.name}
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
                   {badge.name}
                 </Badge>
               ))}

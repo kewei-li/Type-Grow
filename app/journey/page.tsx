@@ -31,7 +31,7 @@ export default function JourneyPage() {
     );
   }
 
-  const levels: Level[] = [1, 2, 3];
+  const levels: Level[] = [1, 2, 3, 4, 5];
 
   const getLevelStatus = (level: Level) => {
     const stats = getLevelStats(level);

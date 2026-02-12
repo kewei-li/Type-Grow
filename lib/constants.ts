@@ -28,6 +28,24 @@ export const LEVELS: Record<number, LevelConfig> = {
     totalPassages: 20,
     accuracyRequired: 90,
   },
+  4: {
+    id: 4,
+    name: 'L4',
+    title: 'Typing Artisan',
+    duration: 20,
+    passagesRequired: 20,
+    totalPassages: 25,
+    accuracyRequired: 92,
+  },
+  5: {
+    id: 5,
+    name: 'L5',
+    title: 'Typing Master',
+    duration: 25,
+    passagesRequired: 24,
+    totalPassages: 30,
+    accuracyRequired: 95,
+  },
 };
 
 export const BADGES: Badge[] = [
@@ -36,48 +54,56 @@ export const BADGES: Badge[] = [
     name: 'First Steps',
     description: 'Complete the Tutorial',
     icon: '🌱',
+    image: '/badges/first-steps.png',
   },
   {
     id: 'focused-mind',
     name: 'Focused Mind',
     description: 'Finish a session without pausing for 30+ seconds',
     icon: '🧘',
+    image: '/badges/focused-mind.png',
   },
   {
     id: 'rhythm-finder',
     name: 'Rhythm Finder',
     description: '50+ consecutive correct keystrokes',
     icon: '🎵',
+    image: '/badges/rhythm-finder.png',
   },
   {
     id: 'listener-typist',
     name: 'Listener → Typist',
     description: 'Complete a Listen & Type passage',
     icon: '👂',
+    image: '/badges/listener-typist.png',
   },
   {
     id: 'streak-3',
     name: '3-Day Streak',
     description: 'Practice for 3 consecutive days',
     icon: '🔥',
+    image: '/badges/streak-3.png',
   },
   {
     id: 'streak-7',
     name: '7-Day Streak',
     description: 'Practice for 7 consecutive days',
     icon: '⭐',
+    image: '/badges/streak-7.png',
   },
   {
     id: 'level-up',
     name: 'Level Up',
     description: 'Advance to a new level',
     icon: '📈',
+    image: '/badges/level-up.png',
   },
   {
     id: 'graduation',
     name: 'Graduation',
-    description: 'Complete Level 3',
+    description: 'Complete Level 5',
     icon: '🎓',
+    image: '/badges/graduation.png',
   },
 ];
 

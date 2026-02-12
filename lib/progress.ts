@@ -22,7 +22,7 @@ export function calculateAccuracy(
 
 export function canUnlockNextLevel(progress: UserProgress): boolean {
   const currentLevel = progress.currentLevel;
-  if (currentLevel >= 3) return false;
+  if (currentLevel >= 5) return false;
 
   const config = LEVELS[currentLevel];
   const passageIds = Object.keys(progress.passages).filter(
@@ -151,7 +151,7 @@ export function completePassage(
   };
 
   // Check for level up
-  if (canUnlockNextLevel(progress) && progress.currentLevel < 3) {
+  if (canUnlockNextLevel(progress) && progress.currentLevel < 5) {
     progress.currentLevel = (progress.currentLevel + 1) as Level;
     if (!progress.badges.includes('level-up')) {
       progress.badges.push('level-up');
@@ -159,9 +159,9 @@ export function completePassage(
   }
 
   // Check for graduation
-  if (progress.currentLevel === 3) {
-    const l3Progress = getLevelProgress(progress, 3);
-    if (l3Progress.completed >= LEVELS[3].passagesRequired && !progress.badges.includes('graduation')) {
+  if (progress.currentLevel === 5) {
+    const l5Progress = getLevelProgress(progress, 5);
+    if (l5Progress.completed >= LEVELS[5].passagesRequired && !progress.badges.includes('graduation')) {
       progress.badges.push('graduation');
     }
   }
