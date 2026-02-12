@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, use } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Volume2 } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -14,7 +14,6 @@ import SessionResult from '@/components/typing/SessionResult';
 import { useProgress } from '@/components/layout/ProgressProvider';
 import { getPassagesByLevel } from '@/content/passages';
 import { LEVELS, BADGES } from '@/lib/constants';
-import { speak, stopSpeaking, isSpeechSupported } from '@/lib/speech';
 import { Level, Passage, TypingState } from '@/types';
 
 interface PracticePageProps {
@@ -30,9 +29,6 @@ export default function PracticePage({ params }: PracticePageProps) {
 
   const levelNum = parseInt(resolvedParams.level.replace('l', ''), 10) as Level;
   const levelConfig = LEVELS[levelNum];
-
-  // Use global audio setting from progress
-  const audioEnabled = progress.audioEnabled;
 
   const [sessionState, setSessionState] = useState<SessionState>('ready');
   const [currentPassage, setCurrentPassage] = useState<Passage | null>(null);
@@ -106,7 +102,6 @@ export default function PracticePage({ params }: PracticePageProps) {
   }) => {
     if (!currentPassage) return;
 
-    stopSpeaking();
     setTimerRunning(false);
 
     // Record completion and get new badges
@@ -131,15 +126,6 @@ export default function PracticePage({ params }: PracticePageProps) {
       }
     }
 
-    // Check for listener-typist badge
-    if (audioEnabled) {
-      earnBadge('listener-typist');
-      if (!newBadges.includes('listener-typist')) {
-        const badge = BADGES.find((b) => b.id === 'listener-typist');
-        if (badge) newBadges.push('listener-typist');
-      }
-    }
-
     const isPersonalBest = !previousBest || result.wpm > previousBest.bestWpm;
 
     setSessionResult({
@@ -154,11 +140,10 @@ export default function PracticePage({ params }: PracticePageProps) {
       }),
     });
     setSessionState('complete');
-  }, [currentPassage, progress.passages, recordPassageComplete, earnBadge, audioEnabled]);
+  }, [currentPassage, progress.passages, recordPassageComplete, earnBadge]);
 
   // Handle time up
   const handleTimeUp = useCallback(() => {
-    stopSpeaking();
     setTimerRunning(false);
     setSessionState('timeup');
   }, []);
@@ -169,11 +154,7 @@ export default function PracticePage({ params }: PracticePageProps) {
     setLiveWpm(0);
     setLiveAccuracy(100);
     setSessionResult(null);
-
-    if (audioEnabled && currentPassage) {
-      speak(currentPassage.content, 0.85);
-    }
-  }, [audioEnabled, currentPassage]);
+  }, []);
 
   // Continue to next passage
   const handleContinue = useCallback(() => {
@@ -195,14 +176,6 @@ export default function PracticePage({ params }: PracticePageProps) {
     setSessionResult(null);
     setTimerRunning(false);
   }, []);
-
-  // Speak current passage when audio enabled during typing
-  useEffect(() => {
-    if (sessionState === 'typing' && audioEnabled && currentPassage) {
-      speak(currentPassage.content, 0.85);
-    }
-    return () => stopSpeaking();
-  }, [sessionState, audioEnabled, currentPassage]);
 
   if (!levelConfig || !currentPassage) {
     return (
@@ -268,18 +241,6 @@ export default function PracticePage({ params }: PracticePageProps) {
                 <p className="text-lg leading-relaxed break-words">{currentPassage.content}</p>
               </div>
 
-              {/* Audio status indicator */}
-              {isSpeechSupported() && (
-                <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
-                  <Volume2 className={`h-5 w-5 ${audioEnabled ? 'text-green-500' : 'text-muted-foreground'}`} />
-                  <span className="text-sm text-muted-foreground">
-                    {audioEnabled
-                      ? 'Audio is ON - text will be read aloud while you type'
-                      : 'Audio is OFF - toggle in header to enable'}
-                  </span>
-                </div>
-              )}
-
               <Button onClick={startSession} size="lg" className="w-full">
                 Start Typing
               </Button>
@@ -291,11 +252,8 @@ export default function PracticePage({ params }: PracticePageProps) {
           <div className="max-w-3xl mx-auto flex flex-col" style={{ maxHeight: 'calc(100vh - 220px)' }}>
             <Card className="flex flex-col min-h-0 flex-1">
               <CardHeader className="pb-2 shrink-0">
-                <CardTitle className="text-lg flex items-center justify-between">
-                  <span>{currentPassage.title}</span>
-                  {audioEnabled && (
-                    <Volume2 className="h-5 w-5 text-green-500" />
-                  )}
+                <CardTitle className="text-lg">
+                  {currentPassage.title}
                 </CardTitle>
               </CardHeader>
               <CardContent className="min-h-0 flex-1">
@@ -303,7 +261,6 @@ export default function PracticePage({ params }: PracticePageProps) {
                   passage={currentPassage.content}
                   onComplete={handleComplete}
                   onProgress={handleTypingProgress}
-                  audioEnabled={audioEnabled}
                 />
               </CardContent>
             </Card>

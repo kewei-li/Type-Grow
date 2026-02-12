@@ -24,8 +24,6 @@ export default function TutorialPage() {
   const [homeRowComplete, setHomeRowComplete] = useState(false);
   const [practiceComplete, setPracticeComplete] = useState(false);
 
-  const audioEnabled = progress.audioEnabled;
-
   const stepIndex = TUTORIAL_STEPS.indexOf(currentStep);
   const progressPercent = (stepIndex / (TUTORIAL_STEPS.length - 1)) * 100;
 
@@ -221,7 +219,6 @@ export default function TutorialPage() {
                   passage={HOME_ROW_TEXT}
                   onComplete={handleHomeRowComplete}
                   disabled={homeRowComplete}
-                  audioEnabled={audioEnabled}
                 />
               </div>
 
@@ -267,7 +264,6 @@ export default function TutorialPage() {
                 passage={FIRST_PASSAGE}
                 onComplete={handlePracticeComplete}
                 disabled={practiceComplete}
-                audioEnabled={audioEnabled}
               />
 
               {practiceComplete && (

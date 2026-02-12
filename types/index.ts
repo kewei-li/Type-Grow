@@ -55,7 +55,6 @@ export interface UserProgress {
   anonymousId: string | null;
   grade: number | null;
   theme: 'dark' | 'light';
-  audioEnabled: boolean;
 }
 
 // Badge definitions

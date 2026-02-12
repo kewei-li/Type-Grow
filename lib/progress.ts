@@ -96,8 +96,7 @@ export function awardBadge(badgeId: string): { awarded: boolean; badge?: typeof 
 export function checkBadgeConditions(
   result: SessionResult,
   consecutiveCorrect: number,
-  hadPause: boolean,
-  isListenMode: boolean
+  hadPause: boolean
 ): string[] {
   const newBadges: string[] = [];
   const progress = getProgress();
@@ -110,11 +109,6 @@ export function checkBadgeConditions(
   // Rhythm Finder: 50+ consecutive correct
   if (consecutiveCorrect >= 50 && !progress.badges.includes('rhythm-finder')) {
     newBadges.push('rhythm-finder');
-  }
-
-  // Listener → Typist: Listen mode completed
-  if (isListenMode && !progress.badges.includes('listener-typist')) {
-    newBadges.push('listener-typist');
   }
 
   // Streak badges

@@ -71,13 +71,6 @@ export const BADGES: Badge[] = [
     image: '/badges/rhythm-finder.png',
   },
   {
-    id: 'listener-typist',
-    name: 'Listener → Typist',
-    description: 'Complete a Listen & Type passage',
-    icon: '👂',
-    image: '/badges/listener-typist.png',
-  },
-  {
     id: 'streak-3',
     name: '3-Day Streak',
     description: 'Practice for 3 consecutive days',

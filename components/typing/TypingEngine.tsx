@@ -17,7 +17,6 @@ interface TypingEngineProps {
   }) => void;
   onProgress?: (state: TypingState) => void;
   disabled?: boolean;
-  audioEnabled?: boolean;
 }
 
 export default function TypingEngine({
@@ -25,7 +24,6 @@ export default function TypingEngine({
   onComplete,
   onProgress,
   disabled = false,
-  audioEnabled = false,
 }: TypingEngineProps) {
   const [state, setState] = useState<TypingState>({
     passage,
@@ -125,12 +123,10 @@ export default function TypingEngine({
       const isCorrect = typedChar === expectedChar;
 
       // Play keystroke sound
-      if (audioEnabled) {
-        if (isCorrect) {
-          playCorrectSound();
-        } else {
-          playErrorSound();
-        }
+      if (isCorrect) {
+        playCorrectSound();
+      } else {
+        playErrorSound();
       }
 
       // Start timer on first keystroke
