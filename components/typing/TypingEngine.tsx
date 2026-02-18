@@ -70,12 +70,21 @@ export default function TypingEngine({
     onProgress?.(state);
   }, [state, onProgress]);
 
-  // Auto-scroll to keep current character visible
+  // Auto-scroll to keep current character centered (around line 4)
   useEffect(() => {
-    const currentEl = containerRef.current?.querySelector('.char-current');
-    if (currentEl) {
-      currentEl.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-    }
+    const container = containerRef.current;
+    const currentEl = container?.querySelector('.char-current');
+    if (!container || !currentEl) return;
+
+    const containerRect = container.getBoundingClientRect();
+    const charRect = (currentEl as HTMLElement).getBoundingClientRect();
+
+    // Target: place the current line ~40% from the top of the container (roughly line 4)
+    const targetOffset = containerRect.height * 0.4;
+    const charRelativeTop = charRect.top - containerRect.top + container.scrollTop;
+    const scrollTo = charRelativeTop - targetOffset;
+
+    container.scrollTo({ top: Math.max(0, scrollTo), behavior: 'smooth' });
   }, [state.currentIndex]);
 
   const handleKeyDown = useCallback(
