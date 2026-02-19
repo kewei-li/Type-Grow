@@ -144,6 +144,24 @@ export function completePassage(
     lastAttempt: new Date().toISOString(),
   };
 
+  // Check for level completion badges
+  const completedLevel = parseInt(passageId.split('-')[0].replace('l', ''), 10);
+  if (completedLevel >= 1 && completedLevel <= 4) {
+    const levelBadgeId = `level-${completedLevel}-complete`;
+    if (!progress.badges.includes(levelBadgeId)) {
+      const levelConfig = LEVELS[completedLevel];
+      const levelPassageIds = Object.keys(progress.passages).filter(
+        (id) => id.startsWith(`l${completedLevel}-`)
+      );
+      const levelCompleted = levelPassageIds.filter(
+        (id) => progress.passages[id]?.completed
+      ).length;
+      if (levelCompleted >= levelConfig.passagesRequired) {
+        progress.badges.push(levelBadgeId);
+      }
+    }
+  }
+
   // Check for level up
   if (canUnlockNextLevel(progress) && progress.currentLevel < 5) {
     progress.currentLevel = (progress.currentLevel + 1) as Level;

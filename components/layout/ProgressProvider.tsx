@@ -108,6 +108,18 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
         }
       }
 
+      // Check level completion badges (L1-L4)
+      for (let lvl = 1; lvl <= 4; lvl++) {
+        const levelBadgeId = `level-${lvl}-complete`;
+        if (updated.badges.includes(levelBadgeId) && !currentProgress.badges.includes(levelBadgeId)) {
+          const badge = BADGES.find((b) => b.id === levelBadgeId);
+          if (badge) {
+            newBadges.push(levelBadgeId);
+            toast.success(`Badge earned: ${badge.icon} ${badge.name}`);
+          }
+        }
+      }
+
       // Check if leveled up
       if (updated.badges.includes('level-up') && !currentProgress.badges.includes('level-up')) {
         const badge = BADGES.find((b) => b.id === 'level-up');
