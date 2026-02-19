@@ -1,15 +1,29 @@
 'use client';
 
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { Leaf, Keyboard, BookOpen, Trophy, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import Header from '@/components/layout/Header';
+import WelcomeDialog from '@/components/layout/WelcomeDialog';
 import { useProgress } from '@/components/layout/ProgressProvider';
 
 export default function LandingPage() {
   const router = useRouter();
-  const { progress } = useProgress();
+  const { progress, isLoading, updateProfile } = useProgress();
+  const [showWelcome, setShowWelcome] = useState(false);
+
+  useEffect(() => {
+    if (!isLoading && progress.name === null) {
+      setShowWelcome(true);
+    }
+  }, [isLoading, progress.name]);
+
+  const handleWelcomeComplete = useCallback((name: string, grade: number) => {
+    updateProfile(name, grade);
+    setShowWelcome(false);
+  }, [updateProfile]);
 
   const handleStart = () => {
     if (progress.tutorialComplete) {
@@ -114,6 +128,7 @@ export default function LandingPage() {
         </section>
       </main>
 
+      <WelcomeDialog open={showWelcome} onComplete={handleWelcomeComplete} />
     </div>
   );
 }

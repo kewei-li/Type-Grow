@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { Sun, Moon, Leaf } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTheme } from './ThemeProvider';
+import { useProgress } from './ProgressProvider';
 
 interface HeaderProps {
   showNav?: boolean;
@@ -13,6 +14,7 @@ interface HeaderProps {
 export default function Header({ showNav = true }: HeaderProps) {
   const pathname = usePathname();
   const { theme, toggleTheme } = useTheme();
+  const { progress } = useProgress();
 
   const navItems = [
     { href: '/journey', label: 'Journey' },
@@ -47,7 +49,12 @@ export default function Header({ showNav = true }: HeaderProps) {
             </nav>
           )}
 
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-2">
+            {progress.name && (
+              <span className="text-sm text-muted-foreground hidden sm:inline">
+                {progress.name}
+              </span>
+            )}
             {/* Theme Toggle */}
             <Button
               variant="ghost"

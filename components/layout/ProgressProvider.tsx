@@ -14,6 +14,7 @@ interface ProgressContextType {
   recordPassageComplete: (passageId: string, wpm: number, accuracy: number) => string[];
   earnBadge: (badgeId: string) => boolean;
   updateGrade: (grade: number) => void;
+  updateProfile: (name: string, grade: number) => void;
   getLevelStats: (level: Level) => {
     completed: number;
     total: number;
@@ -32,6 +33,7 @@ const defaultProgress: UserProgress = {
   streak: { current: 0, lastPracticeDate: null },
   totalPracticeMinutes: 0,
   anonymousId: null,
+  name: null,
   grade: null,
   theme: 'dark',
 };
@@ -43,6 +45,7 @@ const defaultContext: ProgressContextType = {
   recordPassageComplete: () => [],
   earnBadge: () => false,
   updateGrade: () => {},
+  updateProfile: () => {},
   getLevelStats: () => ({ completed: 0, total: 0, avgWpm: 0, avgAccuracy: 0 }),
   canAccessLevel: () => false,
   refreshProgress: () => {},
@@ -167,6 +170,16 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     []
   );
 
+  const updateProfile = useCallback(
+    (name: string, grade: number) => {
+      const current = getProgress();
+      const updated = { ...current, name, grade };
+      saveProgress(updated);
+      setProgress(updated);
+    },
+    []
+  );
+
   const getLevelStats = useCallback(
     (level: Level) => {
       return getLevelProgress(progress, level);
@@ -193,6 +206,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
         recordPassageComplete,
         earnBadge,
         updateGrade,
+        updateProfile,
         getLevelStats,
         canAccessLevel,
         refreshProgress,

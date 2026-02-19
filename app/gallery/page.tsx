@@ -51,7 +51,7 @@ export default function GalleryPage() {
       avgWpm: stats.avgWpm,
       avgAccuracy: stats.avgAccuracy,
       date,
-      anonymousId: progress.anonymousId || 'Learner',
+      anonymousId: progress.name || progress.anonymousId || 'Learner',
     };
   };
 

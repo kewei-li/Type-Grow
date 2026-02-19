@@ -53,6 +53,7 @@ export interface UserProgress {
   };
   totalPracticeMinutes: number;
   anonymousId: string | null;
+  name: string | null;
   grade: number | null;
   theme: 'dark' | 'light';
 }

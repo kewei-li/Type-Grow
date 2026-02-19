@@ -18,6 +18,7 @@ const defaultProgress: UserProgress = {
   },
   totalPracticeMinutes: 0,
   anonymousId: null,
+  name: null,
   grade: null,
   theme: 'dark',
 };
@@ -34,7 +35,13 @@ export function getProgress(): UserProgress {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(initial));
       return initial;
     }
-    return JSON.parse(stored);
+    const parsed = JSON.parse(stored);
+    // Migration: add name field for existing users
+    if (parsed.name === undefined) {
+      parsed.name = null;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
+    }
+    return parsed;
   } catch {
     return defaultProgress;
   }
