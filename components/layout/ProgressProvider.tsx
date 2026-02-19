@@ -123,15 +123,6 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
         }
       }
 
-      // Check if leveled up
-      if (updated.badges.includes('level-up') && !currentProgress.badges.includes('level-up')) {
-        const badge = BADGES.find((b) => b.id === 'level-up');
-        if (badge) {
-          newBadges.push('level-up');
-          toast.success(`Badge earned: ${badge.icon} ${badge.name}`);
-        }
-      }
-
       // Check graduation
       if (updated.badges.includes('graduation') && !currentProgress.badges.includes('graduation')) {
         const badge = BADGES.find((b) => b.id === 'graduation');

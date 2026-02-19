@@ -165,9 +165,6 @@ export function completePassage(
   // Check for level up
   if (canUnlockNextLevel(progress) && progress.currentLevel < 5) {
     progress.currentLevel = (progress.currentLevel + 1) as Level;
-    if (!progress.badges.includes('level-up')) {
-      progress.badges.push('level-up');
-    }
   }
 
   // Check for graduation

@@ -85,13 +85,6 @@ export const BADGES: Badge[] = [
     image: '/badges/streak-7.png',
   },
   {
-    id: 'level-up',
-    name: 'Level Up',
-    description: 'Advance to a new level',
-    icon: '📈',
-    image: '/badges/level-up.png',
-  },
-  {
     id: 'level-1-complete',
     name: 'Level 1 Champion',
     description: 'Complete all required passages in Level 1',
