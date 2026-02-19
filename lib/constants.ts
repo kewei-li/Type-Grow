@@ -134,5 +134,20 @@ export const ANIMALS = [
   'Penguin', 'Sparrow', 'Turtle', 'Beaver', 'Badger',
 ];
 
+export const GRADES = [
+  { value: 0, label: 'K' },
+  { value: 1, label: 'G1' },
+  { value: 2, label: 'G2' },
+  { value: 3, label: 'G3' },
+  { value: 4, label: 'G4' },
+  { value: 5, label: 'G5' },
+  { value: 6, label: 'G6' },
+  { value: 7, label: 'G7' },
+];
+
+export function getGradeLabel(value: number): string {
+  return GRADES.find((g) => g.value === value)?.label || `G${value}`;
+}
+
 export const STORAGE_KEY = 'type-and-grow-progress';
 export const PAGE_VIEWS_KEY = 'type-and-grow-page-views';

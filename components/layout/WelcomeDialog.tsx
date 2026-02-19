@@ -11,13 +11,12 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { GRADES } from '@/lib/constants';
 
 interface WelcomeDialogProps {
   open: boolean;
   onComplete: (name: string, grade: number) => void;
 }
-
-const GRADES = [1, 2, 3, 4, 5, 6];
 
 export default function WelcomeDialog({ open, onComplete }: WelcomeDialogProps) {
   const [name, setName] = useState('');
@@ -71,19 +70,19 @@ export default function WelcomeDialog({ open, onComplete }: WelcomeDialogProps) 
           {/* Grade Selection */}
           <div className="space-y-2">
             <label className="text-sm font-medium">Your Grade</label>
-            <div className="grid grid-cols-6 gap-2">
+            <div className="grid grid-cols-4 gap-2">
               {GRADES.map((g) => (
                 <button
-                  key={g}
+                  key={g.value}
                   type="button"
-                  onClick={() => setGrade(g)}
+                  onClick={() => setGrade(g.value)}
                   className={`h-12 rounded-lg border-2 text-sm font-semibold transition-all ${
-                    grade === g
+                    grade === g.value
                       ? 'border-primary bg-primary/10 text-primary'
                       : 'border-border bg-muted/30 text-muted-foreground hover:border-primary/50 hover:text-foreground'
                   }`}
                 >
-                  {g}
+                  {g.label}
                 </button>
               ))}
             </div>

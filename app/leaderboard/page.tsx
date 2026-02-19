@@ -15,17 +15,8 @@ import {
 import Header from '@/components/layout/Header';
 import { useProgress } from '@/components/layout/ProgressProvider';
 import { getLeaderboard, LeaderboardResult } from '@/lib/db';
-import { LEVELS } from '@/lib/constants';
+import { LEVELS, GRADES, getGradeLabel } from '@/lib/constants';
 import { Level, LeaderboardEntry } from '@/types';
-
-const GRADES = [
-  { value: 1, label: 'Grade 1' },
-  { value: 2, label: 'Grade 2' },
-  { value: 3, label: 'Grade 3' },
-  { value: 4, label: 'Grade 4' },
-  { value: 5, label: 'Grade 5' },
-  { value: 6, label: 'Grade 6' },
-];
 
 export default function LeaderboardPage() {
   const router = useRouter();
@@ -141,7 +132,7 @@ export default function LeaderboardPage() {
             <p className="text-sm text-muted-foreground">
               This helps us show you the right leaderboard. Your choice is private and only used for ranking.
             </p>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-4 gap-2">
               {GRADES.map((grade) => (
                 <Button
                   key={grade.value}
@@ -172,7 +163,7 @@ export default function LeaderboardPage() {
           <Dialog>
             <DialogTrigger asChild>
               <Button variant="outline" className="gap-2">
-                Grade {selectedGrade}
+                {getGradeLabel(selectedGrade)}
                 <ChevronDown className="h-4 w-4" />
               </Button>
             </DialogTrigger>
@@ -180,7 +171,7 @@ export default function LeaderboardPage() {
               <DialogHeader>
                 <DialogTitle>Select Grade</DialogTitle>
               </DialogHeader>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-4 gap-2">
                 {GRADES.map((grade) => (
                   <Button
                     key={grade.value}
@@ -215,7 +206,7 @@ export default function LeaderboardPage() {
         <Card className="max-w-2xl mx-auto">
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
-              <span>Top 20 - Grade {selectedGrade}, {LEVELS[selectedLevel].name}</span>
+              <span>Top 20 - {getGradeLabel(selectedGrade)}, {LEVELS[selectedLevel].name}</span>
               {leaderboardData && (
                 <span className="text-sm font-normal text-muted-foreground">
                   {leaderboardData.totalEntries} participants
