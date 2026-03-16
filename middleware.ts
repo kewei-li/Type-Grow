@@ -9,6 +9,14 @@ const getSecret = () => new TextEncoder().encode(process.env.JWT_SECRET)
 export async function middleware(request: Request) {
   const url = new URL(request.url)
 
+  // Block access via the old Vercel URL
+  if (url.hostname === 'motion-lab-steel.vercel.app') {
+    return new NextResponse(
+      '<html><body style="display:flex;justify-content:center;align-items:center;height:100vh;margin:0;background:#111;color:#fff;font-family:system-ui"><h1>This URL has expired.</h1></body></html>',
+      { status: 410, headers: { 'Content-Type': 'text/html' } }
+    )
+  }
+
   // 1. 检查 handoff token
   const handoffToken = url.searchParams.get('_t')
   if (handoffToken) {
