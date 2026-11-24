@@ -94,6 +94,7 @@ export default function SessionResult({
                 <Badge key={badge.id} variant="outline" className="text-lg py-1 px-3 flex items-center gap-2">
                   <div className="w-6 h-6 relative">
                     <Image
+                      unoptimized
                       src={badge.image}
                       alt={badge.name}
                       fill
