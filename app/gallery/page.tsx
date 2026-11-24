@@ -112,6 +112,7 @@ export default function GalleryPage() {
                       <CardContent className="pt-6 text-center">
                         <div className="w-16 h-16 mx-auto mb-2 relative">
                           <Image
+                            unoptimized
                             src={badge.image}
                             alt={badge.name}
                             fill
@@ -130,6 +131,7 @@ export default function GalleryPage() {
                       <DialogTitle className="flex items-center gap-2">
                         <div className="w-10 h-10 relative">
                           <Image
+                            unoptimized
                             src={badge.image}
                             alt={badge.name}
                             fill
@@ -174,6 +176,7 @@ export default function GalleryPage() {
                     <Lock className="h-4 w-4 absolute top-2 right-2 text-muted-foreground" />
                     <div className="w-16 h-16 mx-auto mb-2 relative grayscale">
                       <Image
+                        unoptimized
                         src={badge.image}
                         alt={badge.name}
                         fill
