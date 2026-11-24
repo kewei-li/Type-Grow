@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { jwtVerify } from 'jose'
 
-const MAIN_SITE = 'https://fun-life-2026.vercel.app'
+const MAIN_SITE = 'https://kewei-li.com'
 const COOKIE_NAME = 'fun_session'
 
 const getSecret = () => new TextEncoder().encode(process.env.JWT_SECRET)
