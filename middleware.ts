@@ -9,6 +9,17 @@ const getSecret = () => new TextEncoder().encode(process.env.JWT_SECRET)
 export async function middleware(request: Request) {
   const url = new URL(request.url)
 
+  // Old Vercel address → permanent redirect to the kewei-li.com subdomain.
+  // Path and query (including a ?_t= handoff token) are kept, so links
+  // shared before the move still work.
+  const host = (request.headers.get('host') ?? url.host).split(':')[0]
+  if (host === 'type-grow.vercel.app') {
+    url.protocol = 'https:'
+    url.hostname = 'type-grow.kewei-li.com'
+    url.port = ''
+    return NextResponse.redirect(url, 308)
+  }
+
   // Always block the retired domain
   if (url.hostname === 'motion-lab-steel.vercel.app') {
     return new NextResponse(
