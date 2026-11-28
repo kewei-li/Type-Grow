@@ -9,6 +9,7 @@ import { Progress } from '@/components/ui/progress';
 import Header from '@/components/layout/Header';
 import { useProgress } from '@/components/layout/ProgressProvider';
 import TypingEngine from '@/components/typing/TypingEngine';
+import HomeRowHand from '@/components/typing/HomeRowHand';
 
 type TutorialStep = 'intro' | 'homerow' | 'practice' | 'complete';
 
@@ -145,71 +146,16 @@ export default function TutorialPage() {
                   ))}
                 </div>
 
-                {/* Hand Outlines */}
-                <div className="flex justify-center gap-6 mt-4">
-                  {/* Left Hand */}
-                  <div className="relative">
-                    <svg width="140" height="100" viewBox="0 0 140 100" className="text-green-500">
-                      {/* Palm */}
-                      <ellipse cx="70" cy="70" rx="55" ry="28" fill="none" stroke="currentColor" strokeWidth="2" opacity="0.6" />
-                      {/* Pinky - A */}
-                      <path d="M20 65 Q18 40 20 20 Q22 15 25 20 Q27 40 28 60" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                      <circle cx="22" cy="18" r="4" fill="none" stroke="currentColor" strokeWidth="1.5" />
-                      <text x="22" y="8" textAnchor="middle" fontSize="10" fill="currentColor" fontWeight="bold">A</text>
-                      {/* Ring - S */}
-                      <path d="M42 60 Q40 30 42 10 Q44 5 47 10 Q49 30 50 58" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                      <circle cx="44" cy="8" r="4" fill="none" stroke="currentColor" strokeWidth="1.5" />
-                      <text x="44" y="-2" textAnchor="middle" fontSize="10" fill="currentColor" fontWeight="bold">S</text>
-                      {/* Middle - D */}
-                      <path d="M64 58 Q62 25 64 5 Q66 0 69 5 Q71 25 72 56" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                      <circle cx="66" cy="3" r="4" fill="none" stroke="currentColor" strokeWidth="1.5" />
-                      <text x="66" y="-7" textAnchor="middle" fontSize="10" fill="currentColor" fontWeight="bold">D</text>
-                      {/* Index - F */}
-                      <path d="M86 58 Q84 30 86 12 Q88 7 91 12 Q93 30 94 56" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                      <circle cx="88" cy="10" r="4" fill="none" stroke="currentColor" strokeWidth="1.5" />
-                      <text x="88" y="0" textAnchor="middle" fontSize="10" fill="currentColor" fontWeight="bold">F</text>
-                      {/* Thumb */}
-                      <path d="M110 75 Q115 65 120 60 Q125 58 125 65 Q120 72 112 80" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" opacity="0.6" />
-                    </svg>
-                    <div className="text-center text-xs text-muted-foreground mt-1">Left Hand</div>
-                  </div>
-
-                  {/* Right Hand */}
-                  <div className="relative">
-                    <svg width="140" height="100" viewBox="0 0 140 100" className="text-green-500">
-                      {/* Palm */}
-                      <ellipse cx="70" cy="70" rx="55" ry="28" fill="none" stroke="currentColor" strokeWidth="2" opacity="0.6" />
-                      {/* Index - J */}
-                      <path d="M46 56 Q48 30 46 12 Q44 7 41 12 Q39 30 38 58" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                      <circle cx="44" cy="10" r="4" fill="none" stroke="currentColor" strokeWidth="1.5" />
-                      <text x="44" y="0" textAnchor="middle" fontSize="10" fill="currentColor" fontWeight="bold">J</text>
-                      {/* Middle - K */}
-                      <path d="M68 56 Q70 25 68 5 Q66 0 63 5 Q61 25 60 58" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                      <circle cx="66" cy="3" r="4" fill="none" stroke="currentColor" strokeWidth="1.5" />
-                      <text x="66" y="-7" textAnchor="middle" fontSize="10" fill="currentColor" fontWeight="bold">K</text>
-                      {/* Ring - L */}
-                      <path d="M90 58 Q92 30 90 10 Q88 5 85 10 Q83 30 82 60" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                      <circle cx="88" cy="8" r="4" fill="none" stroke="currentColor" strokeWidth="1.5" />
-                      <text x="88" y="-2" textAnchor="middle" fontSize="10" fill="currentColor" fontWeight="bold">L</text>
-                      {/* Pinky - ; */}
-                      <path d="M112 60 Q114 40 112 20 Q110 15 107 20 Q105 40 104 65" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                      <circle cx="110" cy="18" r="4" fill="none" stroke="currentColor" strokeWidth="1.5" />
-                      <text x="110" y="8" textAnchor="middle" fontSize="10" fill="currentColor" fontWeight="bold">;</text>
-                      {/* Thumb */}
-                      <path d="M22 75 Q17 65 12 60 Q7 58 7 65 Q12 72 20 80" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" opacity="0.6" />
-                    </svg>
-                    <div className="text-center text-xs text-muted-foreground mt-1">Right Hand</div>
-                  </div>
+                {/* Hands */}
+                <div className="flex justify-center gap-10 mt-6">
+                  <HomeRowHand side="left" />
+                  <HomeRowHand side="right" />
                 </div>
 
-                {/* Finger Labels */}
-                <div className="flex justify-center gap-16 mt-3 text-xs text-muted-foreground">
-                  <div className="text-center">
-                    <span className="text-green-500/70">Pinky → Ring → Middle → Index</span>
-                  </div>
-                  <div className="text-center">
-                    <span className="text-green-500/70">Index → Middle → Ring → Pinky</span>
-                  </div>
+                {/* Finger order */}
+                <div className="flex justify-center gap-10 mt-2 text-xs text-green-500/70">
+                  <span className="w-40 text-center">Pinky · Ring · Middle · Index</span>
+                  <span className="w-40 text-center">Index · Middle · Ring · Pinky</span>
                 </div>
               </div>
 
