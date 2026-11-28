@@ -37,7 +37,7 @@ export default function LandingPage() {
     {
       icon: Keyboard,
       title: 'Learn at Your Pace',
-      description: 'No pressure, no timers pushing you. Type when ready.',
+      description: 'No clock racing you. Sessions end gently, so screen time stays short.',
     },
     {
       icon: BookOpen,

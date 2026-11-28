@@ -224,7 +224,7 @@ export default function PracticePage({ params }: PracticePageProps) {
               onTimeUp={handleTimeUp}
             />
           )}
-          {sessionState !== 'typing' && <div className="w-24" />}
+          {sessionState !== 'typing' && <div className="w-40" />}
         </div>
 
         {/* Progress Bar */}
@@ -307,10 +307,10 @@ export default function PracticePage({ params }: PracticePageProps) {
         {sessionState === 'timeup' && (
           <Card className="max-w-md mx-auto text-center">
             <CardContent className="pt-6 space-y-4">
-              <div className="text-4xl">⏰</div>
-              <h2 className="text-xl font-semibold">Time&apos;s Up!</h2>
+              <div className="text-4xl">🌱</div>
+              <h2 className="text-xl font-semibold">Time for a break</h2>
               <p className="text-muted-foreground">
-                Your {levelConfig.duration}-minute session has ended. Great practice!
+                That was your {levelConfig.duration}-minute session. Rest your hands — your progress is saved.
               </p>
               <div className="flex gap-3">
                 <Button variant="outline" className="flex-1" onClick={handleRetry}>

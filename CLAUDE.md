@@ -42,7 +42,7 @@ The `UserProgress` type in `types/index.ts` defines the complete progress schema
 - Plays keystroke sounds via Web Audio API (`playCorrectSound`/`playErrorSound` from `lib/speech.ts`)
 - Reports completion via `onComplete` callback with: `wpm`, `accuracy`, `duration`, `errors`, `maxConsecutiveCorrect`, `hadLongPause`
 
-Supporting components in `components/typing/`: `Timer.tsx` (countdown with color changes), `StatsDisplay.tsx` (live WPM/accuracy), `SessionResult.tsx` (post-session results with badge display).
+Supporting components in `components/typing/`: `Timer.tsx` (quiet session meter: rough minutes left + thin bar, no seconds or warning colors), `StatsDisplay.tsx` (live WPM/accuracy), `SessionResult.tsx` (post-session results with badge display).
 
 ### Level System
 
